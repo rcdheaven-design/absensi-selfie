@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Absensi Selfie</title>
 </head>
+
 <body>
 
 <h2>Absensi Selfie</h2>
@@ -26,46 +27,64 @@
 
 <img id="hasilFoto" width="300">
 
+<p id="waktu"></p>
+<p id="lokasi"></p>
+
 <script>
 
 function aktifkanKamera() {
-navigator.mediaDevices.getUserMedia({
-video:true
-})
-.then(function(stream){
-document.getElementById("video").srcObject = stream;
-})
-.catch(function(err){
-alert("Kamera tidak bisa dibuka");
-});
+  navigator.mediaDevices.getUserMedia({ video: true })
+  .then(function(stream) {
+    document.getElementById("video").srcObject = stream;
+  })
+  .catch(function() {
+    alert("Kamera tidak bisa dibuka");
+  });
 }
 
 function ambilFoto() {
 
-let video = document.getElementById("video");
-let canvas = document.getElementById("canvas");
+  let video = document.getElementById("video");
+  let canvas = document.getElementById("canvas");
 
-canvas.width = video.videoWidth;
-canvas.height = video.videoHeight;
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
 
-let ctx = canvas.getContext("2d");
+  let ctx = canvas.getContext("2d");
 
-ctx.drawImage(
-video,
-0,
-0,
-canvas.width,
-canvas.height
-);
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-let foto = canvas.toDataURL("image/png");
+  let nama = document.getElementById("nama").value;
+  let waktu = new Date().toLocaleString();
 
-document.getElementById("hasilFoto").src = foto;
+  navigator.geolocation.getCurrentPosition(function(pos) {
 
-alert("Foto berhasil diambil");
+    let gps = pos.coords.latitude + ", " + pos.coords.longitude;
+
+    ctx.fillStyle = "red";
+    ctx.font = "20px Arial";
+
+    ctx.fillText("Nama: " + nama, 10, 30);
+    ctx.fillText("Waktu: " + waktu, 10, 60);
+    ctx.fillText("GPS: " + gps, 10, 90);
+
+    let foto = canvas.toDataURL("image/png");
+
+    document.getElementById("hasilFoto").src = foto;
+    document.getElementById("waktu").innerHTML = "Waktu: " + waktu;
+    document.getElementById("lokasi").innerHTML = "GPS: " + gps;
+
+    alert("Foto absensi berhasil diambil");
+
+  }, function() {
+
+    alert("GPS tidak diizinkan");
+
+  });
+
 }
 
 </script>
 
 </body>
-                                            </html>
+</html>
