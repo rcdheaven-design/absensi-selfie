@@ -20,7 +20,7 @@
 
 <button onclick="aktifkanKamera()">Aktifkan Kamera</button>
 <button onclick="ambilFoto()">Ambil Foto</button>
-
+<button onclick="simpanFoto()">💾 Simpan Foto</button>
 <br><br>
 
 <canvas id="canvas" style="display:none;"></canvas>
@@ -83,7 +83,20 @@ function ambilFoto() {
   });
 
 }
+function simpanFoto() {
 
+    let foto = document.getElementById("hasilFoto").src;
+
+    if (!foto) {
+        alert("Ambil foto terlebih dahulu");
+        return;
+    }
+
+    let link = document.createElement("a");
+    link.href = foto;
+    link.download = "absensi.png";
+    link.click();
+  }
 </script>
 
 </body>
