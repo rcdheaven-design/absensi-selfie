@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Absensi Selfie</title>
+</head>
+<body>
+
+<h2>Absensi Selfie</h2>
+
+<input type="text" id="nama" placeholder="Masukkan Nama">
+
+<br><br>
+
+<video id="video" autoplay playsinline width="300"></video>
+
+<br><br>
+
+<button onclick="aktifkanKamera()">Aktifkan Kamera</button>
+<button onclick="ambilFoto()">Ambil Foto</button>
+
+<br><br>
+
+<canvas id="canvas" style="display:none;"></canvas>
+
+<img id="hasilFoto" width="300">
+
+<script>
+
+function aktifkanKamera() {
+navigator.mediaDevices.getUserMedia({
+video:true
+})
+.then(function(stream){
+document.getElementById("video").srcObject = stream;
+})
+.catch(function(err){
+alert("Kamera tidak bisa dibuka");
+});
+}
+
+function ambilFoto() {
+
+let video = document.getElementById("video");
+let canvas = document.getElementById("canvas");
+
+canvas.width = video.videoWidth;
+canvas.height = video.videoHeight;
+
+let ctx = canvas.getContext("2d");
+
+ctx.drawImage(
+video,
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+let foto = canvas.toDataURL("image/png");
+
+document.getElementById("hasilFoto").src = foto;
+
+alert("Foto berhasil diambil");
+}
+
+</script>
+
+</body>
+                                            </html>
